@@ -1,2 +1,1 @@
-# FURB
-FURB
+Curso de Introducao a Programação
