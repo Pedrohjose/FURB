@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Desafio {
 	public static void main(String[] args) {
-		int nmrAlunos = 2;
+		int nmrAlunos = 20;
 		int[] matriculas = new int[nmrAlunos];
 		double[] notas = new double[nmrAlunos];
 		int[] frequencias = new int[nmrAlunos];
@@ -74,18 +74,90 @@ public class Desafio {
 					System.out.println("Lista de alunos:");
 					for (int i = 0; i < totalAlunos; i++) {
 						String situacao = verificarSituacao(notas[i], frequencias[i]);
-						System.out.printf("Matrícula: %d | Nota: %.1f | Frequência: %d | Situação: %s\n", matriculas[i],
-								notas[i], frequencias[i], situacao);
+						System.out.println("Matrícula:" + matriculas[i] + "| Nota:" + notas[i] + "| Frequência:"
+								+ frequencias[i] + "| Situação:" + situacao);
 					}
 				}
 				break;
 
 			case 3:
+				double maiorNota = 0;
+				double menorNota = 10;
+				double somaNotas = 0;
+				double media = 0;
+				int contadorReprovado = 0;
+				int contadorRecuperacao = 0;
+				int contadorAprovado = 0;
+				double porcentualAprovados = 0;
+				
+				for (int i = 0; i < totalAlunos; i++) {
+					if (notas[i] > maiorNota) {
+						maiorNota = notas[i];
+					}
+					if (notas[i] < menorNota) {
+						menorNota = notas[i];
+					}
+					somaNotas = somaNotas + notas[i];
+					String situacao = verificarSituacao(notas[i], frequencias[i]);
+					if (situacao == "Reprovado por frequência" || situacao == "Reprovado por nota") {
+						contadorReprovado++;
+					}
+					if (situacao == "Aprovado") {
+						contadorAprovado++;
+					}
+					if (situacao == "Recuperação") {
+						contadorRecuperacao++;
+					}
+				}
+				
+				media = somaNotas / totalAlunos;
+				porcentualAprovados = ((contadorAprovado * 100) / totalAlunos);
+				
+				System.out.println("===== ESTATISTICAS DA TURMA =====");
+				System.out.println("Maior Nota da turma: " + maiorNota);
+				System.out.println("Menor Nota da turma: " + menorNota);
+				System.out.println("Media de notas da turma: " + media);
+				System.out.println("Quantidade de alunos Aprovados: " + contadorAprovado);
+				System.out.println("Quantidade de alunos em Recuperacao: " + contadorRecuperacao);
+				System.out.println("Quantidade de alunos Reprovado: " + contadorReprovado);
+				System.out.println("Percentual de aprovados: " + porcentualAprovados + "%");
+				System.out.println("=================================");
 
 				break;
 
 			case 4:
-
+				
+				System.out.print("Digite o número da matrícula: ");
+				int buscaMatricula = sc.nextInt();
+				
+				int valor = 0;
+				
+				boolean matriculaEncontrada = false;
+				while (valor < totalAlunos) {
+					if (matriculas[valor] == buscaMatricula) {
+						matriculaEncontrada = true;
+						break;
+					}
+					valor++;
+				}
+				if (matriculaEncontrada) {
+					String situacao = verificarSituacao(notas[valor], frequencias[valor]);
+					System.out.println("=================================");
+					System.out.println("Matrícula:" + matriculas[valor] + "| Nota:" + notas[valor] + "| Frequência:"
+							+ frequencias[valor] + "| Situação:" + situacao);
+					if (situacao == "Reprovado por frequência" || situacao == "Reprovado por nota") {
+						System.out.println("Voce esta Reprovado! Ano que vem voce tenta denovo!!");
+					}
+					if (situacao == "Aprovado") {
+						System.out.println("Parabens!!Voce passou de Ano!!");
+					}
+					if (situacao == "Recuperação") {
+						System.out.println("Ainda da tempo, estude que voce passa!!");
+					}
+					System.out.println("=================================");
+				} else {
+					System.out.println("Numero de matricula não cadadastrado!!");
+				}
 				break;
 
 			case 5:
@@ -97,20 +169,19 @@ public class Desafio {
 			}
 
 		} while (opcao != 5);
-
+		sc.close();
 	}
-	
-	public static String verificarSituacao(double nota, int frequencia) {
-        if (frequencia < 15) {
-            return "Reprovado por frequência";
-        } else if (nota >= 7.0) {
-            return "Aprovado";
-        } else if (nota >= 5.0) {
-            return "Recuperação";
-        } else {
-            return "Reprovado por nota";
-        }
-    }
 
+	public static String verificarSituacao(double nota, int frequencia) {
+		if (frequencia < 15) {
+			return "Reprovado por frequência";
+		} else if (nota >= 7.0) {
+			return "Aprovado";
+		} else if (nota >= 5.0) {
+			return "Recuperação";
+		} else {
+			return "Reprovado por nota";
+		}
+	}
 
 }
