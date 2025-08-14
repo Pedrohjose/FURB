@@ -20,7 +20,7 @@ public class Desafio {
 			System.out.println("3. Calcular estatísticas da turma");
 			System.out.println("4. Verificar situação de um aluno específico");
 			System.out.println("5. Sair");
-			System.out.print("Escolha uma opção: ");
+			System.out.print("Escolha uma opção:");
 			opcao = sc.nextInt();
 
 			switch (opcao) {
