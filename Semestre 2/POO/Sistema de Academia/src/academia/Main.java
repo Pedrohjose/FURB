@@ -3,8 +3,8 @@ package academia;
 /**
  * Classe principal para testar o sistema da academia: - Criar alunos e
  * instrutores. - Associar aluno a instrutor. - Definir um plano de treino com
- * exercícios (composição). - Testar a relação de mentor entre instrutores
- * (associação reflexiva).
+ * exercícios. - Testar a relação de mentor entre instrutores
+ * @PedroHenriqueJose
  */
 public class Main {
 	public static void main(String[] args) {

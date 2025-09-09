@@ -11,7 +11,7 @@ package academia;
  * Obs.: A manutenção da relação bidirecional Aluno <-> Instrutor é tratada em
  * ambos os lados com cuidado para evitar loops.
  *
- * @author
+ * @PedroHenriqueJose
  */
 public class Aluno {
 

@@ -11,6 +11,7 @@ import java.util.List;
  * - Um Aluno pode ter 0 ou 1 PlanoTreino ativo.
  * - Composição: o PlanoTreino é composto por Exercicios.
  *   (Se o plano "deixar de existir", seus exercícios deixam também.)
+ *   @PedroHenriqueJose
  */
 public class PlanoTreino {
 

@@ -9,6 +9,7 @@ import java.util.List;
  *
  * - Um Instrutor pode orientar vários alunos. - Um Instrutor pode ter outro
  * Instrutor como mentor.
+ * @PedroHenriqueJose
  */
 public class Instrutor {
 
