@@ -1,50 +1,59 @@
 package academia;
 
 /**
- * Classe principal para testar o sistema da academia.
- * 
- * <p>Essa classe cria alguns objetos de {@link Aluno} e {@link PlanoTreino},
- * imprime suas informações e também demonstra o lançamento e captura de
- * exceções com valores inválidos.</p>
- * 
- * @author Pedro Henrique Jose
+ * Classe principal para testar o sistema da academia: - Criar alunos e
+ * instrutores. - Associar aluno a instrutor. - Definir um plano de treino com
+ * exercícios (composição). - Testar a relação de mentor entre instrutores
+ * (associação reflexiva).
  */
 public class Main {
+	public static void main(String[] args) {
+		System.out.println("=== Sistema de Academia ===\n");
 
-    /**
-     * Método principal que executa os testes de criação de alunos e planos.
-     * 
-     * @param args argumentos da linha de comando (não utilizados)
-     */
-    public static void main(String[] args) {
-        System.out.println("Testando Alunos e Planos:\n");
+		// Instrutores
+		Instrutor inst1 = new Instrutor("Carlos Silva", "CREF1234", "Musculação");
+		Instrutor inst2 = new Instrutor("Mariana Costa", "CREF5678", "Crossfit");
+		inst1.setMentor(inst2); // associação reflexiva
 
-        Aluno a1 = new Aluno("Ana", "231", 25, 62.0, 1.68);
-        Aluno a2 = new Aluno("Andre", "322");
-        a2.setIdade(30);
-        a2.setPeso(82.5);
-        a2.setAltura(1.80);
+		// Alunos
+		Aluno a1 = new Aluno("Ana", "231", 25, 62.0, 1.68);
+		Aluno a2 = new Aluno("Andre", "322");
 
-        PlanoTreino p1 = new PlanoTreino("Treino de força", true);
-        PlanoTreino p2 = new PlanoTreino("Cardio");
-        p2.ativar();
+		// Associação: Instrutor orienta vários alunos
+		inst1.adicionarAluno(a1);
+		inst1.adicionarAluno(a2);
 
-        System.out.println(a1);
-        System.out.println(a2);
-        System.out.println(p1);
-        System.out.println(p2);
+		// Plano de treino (1 plano pertence a 1 aluno)
+		PlanoTreino planoAna = new PlanoTreino("Hipertrofia", a1, true);
+		planoAna.adicionarExercicio(new Exercicio("Supino Reto", 3, 12, 30.0));
+		planoAna.adicionarExercicio(new Exercicio("Agachamento Livre", 4, 10, 40.0));
+		planoAna.adicionarExercicio(new Exercicio("Remada Curvada", 3, 10, 32.5));
 
-        System.out.println("\nTestando Exceções:\n");
-        try {
-            new Aluno("Pedro", "302", -5, 70, 1.75);
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro (idade): " + e.getMessage());
-        }
+		// Impressões / Resumos
+		System.out.println(inst1.getResumo());
+		System.out.println(inst2.getResumo());
+		System.out.println(a1.getResumo());
+		System.out.println(a2.getResumo());
+		System.out.println(planoAna.getResumo());
 
-        try {
-            new PlanoTreino("   ");
-        } catch (IllegalArgumentException e) {
-            System.out.println("Erro (descrição): " + e.getMessage());
-        }
-    }
+		// Teste de consistência: trocar aluno de instrutor
+		System.out.println("\n-- Trocando o instrutor do Andre para a Mariana --");
+		a2.setInstrutor(inst2);
+		System.out.println(inst1.getResumo());
+		System.out.println(inst2.getResumo());
+		System.out.println(a2.getResumo());
+
+		// Exceções rápidas (opcional)
+		System.out.println("\n-- Testando exceções --");
+		try {
+			inst1.setMentor(inst1); // não pode ser seu próprio mentor
+		} catch (IllegalArgumentException e) {
+			System.out.println("Erro esperado (mentor): " + e.getMessage());
+		}
+		try {
+			new PlanoTreino("   ", a1);
+		} catch (IllegalArgumentException e) {
+			System.out.println("Erro esperado (descrição): " + e.getMessage());
+		}
+	}
 }

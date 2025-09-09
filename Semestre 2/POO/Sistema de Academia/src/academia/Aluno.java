@@ -2,9 +2,15 @@ package academia;
 
 /**
  * Representa um aluno de uma academia, armazenando informações pessoais como
- * nome, matrícula, idade, peso e altura. Permite acessar e modificar esses
- * dados de forma controlada.
- * 
+ * nome, matrícula, idade, peso e altura. Também mantém o vínculo com um
+ * instrutor e (opcionalmente) um plano de treino ativo.
+ *
+ * Regras: - Um Aluno pode ter 0 ou 1 PlanoTreino ativo. - Um Aluno deve estar
+ * vinculado a um Instrutor (recomendado).
+ *
+ * Obs.: A manutenção da relação bidirecional Aluno <-> Instrutor é tratada em
+ * ambos os lados com cuidado para evitar loops.
+ *
  * @author
  */
 public class Aluno {
@@ -15,15 +21,12 @@ public class Aluno {
 	private double peso;
 	private double altura;
 
+	// Relacionamentos
+	private Instrutor instrutor; // associação N..1 (muitos alunos para 1 instrutor)
+	private PlanoTreino planoTreino; // 0..1 (um aluno pode ter 0 ou 1 plano ativo)
+
 	/**
 	 * Constrói um aluno com todas as informações fornecidas.
-	 * 
-	 * @param nome      Nome do aluno.
-	 * @param matricula Matrícula do aluno.
-	 * @param idade     Idade do aluno. Deve ser maior ou igual a 0.
-	 * @param peso      Peso do aluno em quilogramas.
-	 * @param altura    Altura do aluno em metros.
-	 * @throws IllegalArgumentException se a idade for negativa.
 	 */
 	public Aluno(String nome, String matricula, int idade, double peso, double altura) {
 		this.nome = nome;
@@ -35,115 +38,104 @@ public class Aluno {
 
 	/**
 	 * Constrói um aluno apenas com nome e matrícula.
-	 * 
-	 * @param nome      Nome do aluno.
-	 * @param matricula Matrícula do aluno.
 	 */
 	public Aluno(String nome, String matricula) {
 		this.nome = nome;
 		this.matricula = matricula;
 	}
 
-	/**
-	 * Retorna o nome do aluno.
-	 * 
-	 * @return Nome do aluno.
-	 */
+	// Getters/Setters básicos
 	public String getNome() {
 		return nome;
 	}
 
-	/**
-	 * Define o nome do aluno.
-	 * 
-	 * @param nome Nome a ser definido.
-	 */
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
 
-	/**
-	 * Retorna a matrícula do aluno.
-	 * 
-	 * @return Matrícula do aluno.
-	 */
 	public String getMatricula() {
 		return matricula;
 	}
 
-	/**
-	 * Define a matrícula do aluno.
-	 * 
-	 * @param matricula Matrícula a ser definida.
-	 */
 	public void setMatricula(String matricula) {
 		this.matricula = matricula;
 	}
 
-	/**
-	 * Retorna a idade do aluno.
-	 * 
-	 * @return Idade do aluno.
-	 */
 	public int getIdade() {
 		return idade;
 	}
 
-	/**
-	 * Define a idade do aluno.
-	 * 
-	 * @param idade Idade a ser definida. Deve ser maior ou igual a 0.
-	 * @throws IllegalArgumentException se a idade for negativa.
-	 */
 	public void setIdade(int idade) {
-		if (idade < 0) {
+		if (idade < 0)
 			throw new IllegalArgumentException("Idade não pode ser negativa.");
-		}
 		this.idade = idade;
 	}
 
-	/**
-	 * Retorna o peso do aluno.
-	 * 
-	 * @return Peso do aluno em quilogramas.
-	 */
 	public double getPeso() {
 		return peso;
 	}
 
-	/**
-	 * Define o peso do aluno.
-	 * 
-	 * @param peso Peso a ser definido em quilogramas.
-	 */
 	public void setPeso(double peso) {
 		this.peso = peso;
 	}
 
-	/**
-	 * Retorna a altura do aluno.
-	 * 
-	 * @return Altura do aluno em metros.
-	 */
 	public double getAltura() {
 		return altura;
 	}
 
-	/**
-	 * Define a altura do aluno.
-	 * 
-	 * @param altura Altura a ser definida em metros.
-	 */
 	public void setAltura(double altura) {
 		this.altura = altura;
 	}
 
+	// Relacionamentos
+	public Instrutor getInstrutor() {
+		return instrutor;
+	}
+
 	/**
-	 * Retorna uma representação textual do aluno, incluindo nome, matrícula,
-	 * idade, peso e altura.
-	 * 
-	 * @return String com informações do aluno.
+	 * Define o instrutor do aluno e mantém a consistência com a lista de alunos do
+	 * instrutor.
 	 */
+	public void setInstrutor(Instrutor novoInstrutor) {
+		if (this.instrutor == novoInstrutor)
+			return;
+
+		// Remove do instrutor anterior
+		if (this.instrutor != null) {
+			this.instrutor.removerAluno(this);
+		}
+		this.instrutor = novoInstrutor;
+
+		// Adiciona ao novo instrutor
+		if (novoInstrutor != null) {
+			novoInstrutor.adicionarAluno(this);
+		}
+	}
+
+	public PlanoTreino getPlanoTreino() {
+		return planoTreino;
+	}
+
+	/**
+	 * Define o plano de treino do aluno (0..1). Regra: o PlanoTreino deve pertencer
+	 * a este aluno.
+	 */
+	public void setPlanoTreino(PlanoTreino planoTreino) {
+		if (planoTreino != null && planoTreino.getAluno() != this) {
+			throw new IllegalArgumentException("O PlanoTreino informado pertence a outro aluno.");
+		}
+		this.planoTreino = planoTreino;
+	}
+
+	/**
+	 * Retorna um resumo textual do aluno.
+	 */
+	public String getResumo() {
+		return "Aluno: " + nome + " | Matrícula: " + matricula + " | Instrutor: "
+				+ (instrutor != null ? instrutor.getNome() : "Sem instrutor") + " | Plano ativo: "
+				+ (planoTreino != null ? planoTreino.getDescricao() : "Nenhum");
+	}
+
 	@Override
 	public String toString() {
 		return "Aluno: " + nome + " (Matrícula: " + matricula + "), idade: " + idade + ", peso: " + peso + ", altura: "
