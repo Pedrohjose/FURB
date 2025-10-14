@@ -1,36 +1,24 @@
 package academia;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Representa um instrutor da academia, com nome, CREF, especialidade, alunos
- * orientados e um possível mentor (associação reflexiva).
- *
- * - Um Instrutor pode orientar vários alunos. - Um Instrutor pode ter outro
- * Instrutor como mentor.
- * @PedroHenriqueJose
- */
-public class Instrutor {
+public class Instrutor extends Pessoa {
 
-	private String nome;
 	private String cref;
 	private String especialidade;
-	private List<Aluno> alunos = new ArrayList<>();
-	private Instrutor mentor; // associação reflexiva
+	private ArrayList<Aluno> alunos;
+	private Instrutor mentor;
 
-	public Instrutor(String nome, String cref, String especialidade) {
-		this.nome = nome;
+	public Instrutor(String nome, String cpf, String cref, String especialidade) {
+		super(nome, cpf);
 		this.cref = cref;
 		this.especialidade = especialidade;
+		alunos = new ArrayList<>();
 	}
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	public Instrutor() {
+		super(null, null);
+		alunos = new ArrayList<>();
 	}
 
 	public String getCref() {
@@ -49,56 +37,58 @@ public class Instrutor {
 		this.especialidade = especialidade;
 	}
 
+	public ArrayList<Aluno> getAlunos() {
+		return alunos;
+	}
+
+	public void setAlunos(ArrayList<Aluno> alunos) {
+		this.alunos = alunos;
+	}
+
 	public Instrutor getMentor() {
 		return mentor;
 	}
 
-
 	public void setMentor(Instrutor mentor) {
-		if (mentor == this) {
-			throw new IllegalArgumentException("Um instrutor não pode ser mentor de si mesmo.");
+		if (mentor.equals(this)) {
+			System.out.println("Mentor invalido");
+		} else {
+			this.mentor = mentor;
 		}
-		this.mentor = mentor;
 	}
 
-	public List<Aluno> getAlunos() {
-		return new ArrayList<>(alunos);
-	}
-
-	/**
-	 * Associa um aluno a este instrutor, mantendo a ligação nos dois lados.
-	 */
 	public void adicionarAluno(Aluno aluno) {
-		if (aluno == null)
-			return;
-		aluno.setInstrutor(this); 
+		alunos.add(aluno);
+		aluno.setInstrutor(this);
 	}
 
-	/**
-	 * Remove a associação com um aluno, mantendo a ligação nos dois lados.
-	 */
 	public void removerAluno(Aluno aluno) {
-		if (aluno == null)
-			return;
-		if (alunos.contains(aluno)) {
-			aluno.setInstrutor(null);
-		}
+		alunos.remove(aluno);
+		aluno.setInstrutor(null);
 	}
+
+	@Override
+	public String toString() {
+		return getResumo();
+	}
+
+	@Override
 	public String getResumo() {
-	    String resumo = "Instrutor: " + nome + " | CREF: " + cref + " | Especialidade: " + especialidade;
-	    if (mentor != null) resumo += " | Mentor: " + mentor.getNome();
+		// Exibe os alunos de forma mais limpa
+		System.out.print("Alunos: ");
+		if (alunos.isEmpty()) {
+			System.out.println("Nenhum aluno cadastrado.");
+		} else {
+			for (Aluno a : alunos) {
+				System.out.print(a.getNome() + ", ");
+			}
+			System.out.println(); // pula linha no final
+		}
 
-	    resumo += "\n  Alunos: ";
-	    if (alunos.isEmpty()) {
-	        resumo += "Nenhum";
-	    } else {
-	        for (int i = 0; i < alunos.size(); i++) {
-	            resumo += alunos.get(i).getNome();
-	            if (i < alunos.size() - 1) resumo += ", ";
-	        }
-	    }
-
-	    return resumo;
+		// Monta o resumo do instrutor
+		String mentorNome = (mentor != null) ? mentor.getNome() : "Sem mentor";
+		return "Instrutor: " + getNome() + "\n" + "CREF: " + cref + "\n" + "Especialidade: " + especialidade + "\n"
+				+ "Mentor: " + mentorNome+"\n";
 	}
-
+	
 }

@@ -1,82 +1,120 @@
 package academia;
 
 import java.util.ArrayList;
-import java.util.List;
 
-/**
- * Representa um plano de treino da academia.
- *
- * Regras:
- * - Um PlanoTreino pertence a 1 aluno (1..1).
- * - Um Aluno pode ter 0 ou 1 PlanoTreino ativo.
- * - Composição: o PlanoTreino é composto por Exercicios.
- *   (Se o plano "deixar de existir", seus exercícios deixam também.)
- *   @PedroHenriqueJose
- */
 public class PlanoTreino {
 
-    private String descricao;
-    private boolean ativo;
-    private final List<Exercicio> exercicios = new ArrayList<>();
-    private final Aluno aluno; // pertence a 1 aluno
+	private String descicao;
 
-    /**
-     * Constrói um plano de treino para um aluno.
-     */
-    public PlanoTreino(String descricao, Aluno aluno, boolean ativo) {
-        setDescricao(descricao);
-        if (aluno == null) throw new IllegalArgumentException("Aluno não pode ser nulo no PlanoTreino.");
-        this.aluno = aluno;
-        this.ativo = ativo;
-        // Vincula no aluno (0..1)
-        aluno.setPlanoTreino(this);
-    }
+	private String nivel;
 
-    /**
-     * Constrói um plano de treino inicialmente inativo para um aluno.
-     */
-    public PlanoTreino(String descricao, Aluno aluno) {
-        this(descricao, aluno, false);
-    }
+	private boolean ativo;
 
-    public String getDescricao() { return descricao; }
-    public void setDescricao(String descricao) {
-        if (descricao == null || descricao.trim().isEmpty()) {
-            throw new IllegalArgumentException("Descrição do plano não pode ser vazia.");
-        }
-        this.descricao = descricao;
-    }
+	private ArrayList<Exercicio> exercicios;
 
-    public boolean isAtivo() { return ativo; }
-    public void ativar() { this.ativo = true; }
-    public void desativar() { this.ativo = false; }
+	public PlanoTreino(String descicao, String nivel) {
+		if (descicao.length() <= 4) {
+			System.out.println("Descrição insuficiente, valor padrão definido");
+			this.descicao = "Treino Desconhecido";
+		} else {
+			this.descicao = descicao;
+		}
 
-    public Aluno getAluno() { return aluno; }
-    public List<Exercicio> getExercicios() { return new ArrayList<>(exercicios); }
+		if (nivel.length() <= 4) {
+			System.out.println("Nivel insuficiente, valor padrão definido");
+			this.descicao = "Nivel Desconhecido";
+		} else {
+			this.descicao = descicao;
+		}
+		this.ativo = true;
 
-    // Composição: métodos para gerenciar exercícios
-    public void adicionarExercicio(Exercicio e) {
-        if (e != null) exercicios.add(e);
-    }
+		exercicios = new ArrayList<>();
+	}
 
-    public void removerExercicio(Exercicio e) {
-        exercicios.remove(e);
-    }
+	public PlanoTreino(String descicao) {
+		if (descicao.length() <= 4) {
+			System.out.println("Necessario descrição, valor padrão definido");
+			this.descicao = "Treino Desconhecido";
+		} else {
+			this.descicao = descicao;
+		}
+		this.descicao = "Nivel Desconhecido";
+		this.ativo = true;
 
-    public String getResumo() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Plano: ").append(descricao)
-          .append(" | Ativo: ").append(ativo ? "Sim" : "Não")
-          .append(" | Aluno: ").append(aluno.getNome())
-          .append("\nExercícios:\n");
-        for (Exercicio ex : exercicios) {
-            sb.append(" - ").append(ex.getResumo()).append("\n");
-        }
-        return sb.toString();
-    }
+		exercicios = new ArrayList<>();
+	}
 
-    @Override
-    public String toString() {
-        return "PlanoTreino: " + descricao + " (Ativo: " + ativo + ")";
-    }
+	public PlanoTreino() {
+		exercicios = new ArrayList<>();
+	}
+
+	public void ativar() {
+		this.ativo = true;
+	}
+
+	public void desativar() {
+		this.ativo = false;
+	}
+
+	public String getDescicao() {
+		return descicao;
+	}
+
+	public void setDescicao(String descicao) {
+		if (descicao.length() <= 4) {
+			System.out.println("Descrição insuficiente, valor padrão definido");
+			this.descicao = "Treino Desconhecido";
+		} else {
+			this.descicao = descicao;
+		}
+	}
+
+	public String getNivel() {
+		return nivel;
+	}
+
+	public void setNivel(String nivel) {
+		if (nivel.length() <= 4) {
+			System.out.println("Nivel insuficiente, valor padrão definido");
+			this.nivel = "Nivel Desconhecido";
+		} else {
+			this.nivel = nivel;
+		}
+
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
+	}
+
+	public ArrayList<Exercicio> getExercicios() {
+		return exercicios;
+	}
+
+	public void adicionarExercicio(Exercicio exercicio) {
+		exercicios.add(exercicio);
+	}
+
+	public void removerExercicio(Exercicio exercicio) {
+		exercicios.remove(exercicio);
+	}
+
+	public String getResumo() {
+		System.out.print("Exercícios: ");
+		if (exercicios == null || exercicios.isEmpty()) {
+			System.out.println("Nenhum exercício cadastrado.");
+		} else {
+			for (Exercicio ex : exercicios) {
+				System.out.print(ex.getNome() + ", ");
+			}
+			System.out.println();
+		}
+
+		return "Plano de Treino: " + descicao + "\n" + "Nível: " + nivel + "\n" + "Ativo: " + (ativo ? "Sim" : "Não");
+	}
+
 }

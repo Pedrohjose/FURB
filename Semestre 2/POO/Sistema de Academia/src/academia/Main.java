@@ -1,59 +1,90 @@
 package academia;
 
-/**
- * Classe principal para testar o sistema da academia: - Criar alunos e
- * instrutores. - Associar aluno a instrutor. - Definir um plano de treino com
- * exercícios. - Testar a relação de mentor entre instrutores
- * @PedroHenriqueJose
- */
+import java.util.ArrayList;
+
 public class Main {
+
 	public static void main(String[] args) {
-		System.out.println("=== Sistema de Academia ===\n");
 
-		// Instrutores
-		Instrutor inst1 = new Instrutor("Carlos Silva", "CREF1234", "Musculação");
-		Instrutor inst2 = new Instrutor("Mariana Costa", "CREF5678", "Crossfit");
-		inst1.setMentor(inst2); // associação reflexiva
+		Aluno aluno1 = new Aluno("Pedro", "123.456.789-00", "A001", 20, 70, 1.78);
+		Aluno aluno2 = new Aluno("Mariana", "987.654.321-11", "A002", 22, 60, 1.65);
+		Aluno aluno3 = new Aluno("Lucas", "456.789.123-22", "A003", 25, 82, 1.80);
+		Aluno aluno4 = new Aluno("Fernanda", "321.654.987-33", "A004", 19, 55, 1.62);
+		Aluno aluno5 = new Aluno("João", "741.852.963-44", "A005", 28, 90, 1.85);
 
-		// Alunos
-		Aluno a1 = new Aluno("Ana", "231", 25, 62.0, 1.68);
-		Aluno a2 = new Aluno("Andre", "322");
+		Instrutor instrutor1 = new Instrutor("Gustavo", "333.333.333-33", "CREF12345", "Musculação");
+		instrutor1.adicionarAluno(aluno1);
+		instrutor1.adicionarAluno(aluno2);
 
-		// Associação: Instrutor orienta vários alunos
-		inst1.adicionarAluno(a1);
-		inst1.adicionarAluno(a2);
+		System.out.println("Resumo instrutor 1:");
+		System.out.println(instrutor1.getResumo() + "\n");
 
-		// Plano de treino (1 plano pertence a 1 aluno)
-		PlanoTreino planoAna = new PlanoTreino("Hipertrofia", a1, true);
-		planoAna.adicionarExercicio(new Exercicio("Supino Reto", 3, 12, 30.0));
-		planoAna.adicionarExercicio(new Exercicio("Agachamento Livre", 4, 10, 40.0));
-		planoAna.adicionarExercicio(new Exercicio("Remada Curvada", 3, 10, 32.5));
+		PlanoTreino plano1 = new PlanoTreino("Força Total", "Avançado");
 
-		// Impressões / Resumos
-		System.out.println(inst1.getResumo());
-		System.out.println(inst2.getResumo());
-		System.out.println(a1.getResumo());
-		System.out.println(a2.getResumo());
-		System.out.println(planoAna.getResumo());
+		Exercicio ex1 = new Exercicio("Supino Reto", 3, 12, 40);
+		Exercicio ex2 = new Exercicio("Agachamento Livre", 4, 10, 80);
+		Exercicio ex3 = new Exercicio("Puxada Frontal", 3, 12, 45);
+		Exercicio ex4 = new Exercicio("Leg Press", 4, 15, 120);
+		Exercicio ex5 = new Exercicio("Elevação Lateral", 3, 15, 12);
+		Exercicio ex6 = new Exercicio("Remada Curvada", 4, 10, 55);
 
-		// Teste de consistência: trocar aluno de instrutor
-		System.out.println("\n-- Trocando o instrutor do Andre para a Mariana --");
-		a2.setInstrutor(inst2);
-		System.out.println(inst1.getResumo());
-		System.out.println(inst2.getResumo());
-		System.out.println(a2.getResumo());
+		plano1.adicionarExercicio(ex1);
+		plano1.adicionarExercicio(ex2);
+		plano1.adicionarExercicio(ex3);
+		plano1.adicionarExercicio(ex4);
+		plano1.adicionarExercicio(ex5);
+		plano1.adicionarExercicio(ex6);
 
-		// Exceções rápidas (opcional)
-		System.out.println("\n-- Testando exceções --");
-		try {
-			inst1.setMentor(inst1); // não pode ser seu próprio mentor
-		} catch (IllegalArgumentException e) {
-			System.out.println("Erro esperado (mentor): " + e.getMessage());
-		}
-		try {
-			new PlanoTreino("   ", a1);
-		} catch (IllegalArgumentException e) {
-			System.out.println("Erro esperado (descrição): " + e.getMessage());
+		System.out.println("Testes de atribuição de Planos");
+		aluno1.setPlanoTreino(plano1);
+		aluno2.setPlanoTreino(plano1);
+		System.out.println(aluno2.getPlanoTreino());
+		System.out.println();
+
+		Instrutor instrutor2 = new Instrutor("Renata", "444.444.444-44", "CREF23456", "Pilates");
+		Instrutor instrutor3 = new Instrutor("Camila", "555.555.555-55", "CREF34567", "Crossfit");
+		Instrutor instrutor4 = new Instrutor("Felipe", "666.666.666-66", "CREF45678", "Funcional");
+		Instrutor instrutor5 = new Instrutor("Beatriz", "777.777.777-77", "CREF56789", "Yoga");
+
+		System.out.println("Testes de mentor");
+		instrutor1.setMentor(instrutor1);
+		instrutor1.setMentor(instrutor2);
+		instrutor2.setMentor(instrutor1);
+		System.out.println();
+
+		System.out.println(instrutor1.getResumo());
+		System.out.println(instrutor2.getResumo());
+		System.out.println(plano1.getResumo());
+
+		InstrutorMusculacao im1 = new InstrutorMusculacao("André", "888.888.888-88", "CREF67890", "Musculação");
+		InstrutorPilates ip1 = new InstrutorPilates("Larissa", "999.999.999-99", "CREF78901", "Pilates");
+
+		System.out.println(instrutor1);
+		System.out.println(im1);
+		System.out.println(ip1);
+
+		AlunoVip av1 = new AlunoVip("Clara", "A006", 27);
+
+		System.out.println(aluno1);
+		System.out.println(av1.getResumo());
+		System.out.println(av1.getDescontoMensalidade());
+
+		ArrayList<Pessoa> pessoas = new ArrayList<>();
+
+		pessoas.add(aluno1);
+		pessoas.add(aluno2);
+		pessoas.add(aluno3);
+		pessoas.add(aluno4);
+		pessoas.add(aluno5);
+
+		pessoas.add(instrutor1);
+		pessoas.add(instrutor2);
+		pessoas.add(instrutor3);
+		pessoas.add(instrutor4);
+		pessoas.add(instrutor5);
+
+		for (Pessoa p : pessoas) {
+			System.out.println(p.getResumo());
 		}
 	}
 }

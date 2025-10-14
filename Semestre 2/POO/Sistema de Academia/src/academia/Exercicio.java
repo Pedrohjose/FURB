@@ -1,15 +1,10 @@
 package academia;
 
-/**
- * Representa um exercício dentro de um PlanoTreino. Ex.: "Supino Reto" 3x12 @
- * 30.5kg.
- */
 public class Exercicio {
-
 	private String nome;
 	private int series;
 	private int repeticoes;
-	private double carga; // em kg
+	private double carga;
 
 	public Exercicio(String nome, int series, int repeticoes, double carga) {
 		this.nome = nome;
@@ -18,28 +13,46 @@ public class Exercicio {
 		this.carga = carga;
 	}
 
+	public Exercicio() {
+	}
+
 	public String getNome() {
 		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public int getSeries() {
 		return series;
 	}
 
+	public void setSeries(int series) {
+		this.series = series;
+	}
+
 	public int getRepeticoes() {
 		return repeticoes;
+	}
+
+	public void setRepeticoes(int repeticoes) {
+		this.repeticoes = repeticoes;
 	}
 
 	public double getCarga() {
 		return carga;
 	}
 
-	public String getResumo() {
-		return nome + " - " + series + "x" + repeticoes + " " + carga + "kg";
+	public void setCarga(double carga) {
+		this.carga = carga;
 	}
 
-	@Override
-	public String toString() {
-		return getResumo();
+	public String getResumo() {
+	    return "Exercício: " + nome + "\n"
+	         + "Séries: " + series + "\n"
+	         + "Repetições: " + repeticoes + "\n"
+	         + "Carga: " + carga + " kg\n";
 	}
+
 }
