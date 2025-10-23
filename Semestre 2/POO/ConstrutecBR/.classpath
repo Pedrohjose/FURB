@@ -6,5 +6,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/Usuario/OneDrive/Documentos/GitHub/FURB/Semestre 2/POO/ConstrutecBR/src/lib/junit-platform-console-standalone-6.0.0-RC2.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

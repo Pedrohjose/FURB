@@ -23,6 +23,15 @@ public class ObraPublica extends Obra {
 
 	@Override
 	public String getResumo() {
-		return String.format("Obra Pública %s - %s (Órgão: %s)", getNumero(), getDescricao(), orgaoResponsavel);
+		String duracaoStr;
+		try {
+			long duracao = calcularDuracaoDias();
+			duracaoStr = duracao + " dias";
+		} catch (Exception e) {
+			duracaoStr = "N/A";
+		}
+
+		return String.format("Obra Pública %s - %s (Órgão: %s) | Duração: %s", getNumero(), getDescricao(),
+				orgaoResponsavel, duracaoStr);
 	}
 }

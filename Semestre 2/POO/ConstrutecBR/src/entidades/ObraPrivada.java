@@ -11,7 +11,7 @@ public class ObraPrivada extends Obra {
 	}
 
 	private Localizacao localizacao;
-	private double areaTotal; // metros quadrados
+	private double areaTotal; 
 	private String endereco;
 
 	public ObraPrivada(String numero, LocalDate dataEntrada, String descricao, Localizacao localizacao,

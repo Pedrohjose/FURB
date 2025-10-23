@@ -67,11 +67,16 @@ public abstract class Obra {
 		return Collections.unmodifiableList(responsaveis);
 	}
 
+
 	public void adicionarResponsavel(Profissional p) {
 		if (p == null)
 			throw new IllegalArgumentException("Profissional nulo");
-		if (!responsaveis.contains(p))
-			responsaveis.add(p);
+		
+		if (responsaveis.contains(p)) {
+			throw new IllegalArgumentException("Profissional já é responsável por esta obra.");
+		}
+			
+		responsaveis.add(p);
 	}
 
 	public long calcularDuracaoDias() {
@@ -81,10 +86,10 @@ public abstract class Obra {
 		return ChronoUnit.DAYS.between(dataInicio, fim);
 	}
 
-	public abstract String getResumo();
-
 	@Override
 	public String toString() {
-		return String.format("[%s] %s - entrada: %s - tipo: %s", numero, descricao, dataEntrada, tipo);
+		return getResumo();
 	}
+	
+	public abstract String getResumo();
 }
